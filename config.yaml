@@ -1,0 +1,54 @@
+# NDD Single-Cell Analysis Configuration
+
+project:
+  name: "NDD-scRNA-seq-Analysis"
+  version: "1.0.0"
+  author: "Zhaohui Man"
+  description: "Comparative single-cell analysis of neurodegenerative diseases"
+
+system:
+  memory_gb: 128
+  cores: 32
+  temp_dir: "/tmp"
+
+software:
+  cellranger:
+    version: "7.0.0"
+    reference: "refdata-gex-GRCh38-2020-A"
+  r:
+    version: "4.2.0"
+
+data:
+  synapse:
+    ad_normal: "syn51110813"
+    pd_dlb: "syn60245188"
+
+groups:
+  diseases: ["AD", "PD", "DLB"]
+  control: "Normal"
+  comparisons:
+    - "AD.NORMAL"
+    - "PD.NORMAL"
+    - "DLB.NORMAL"
+
+qc:
+  min_cells: 3
+  min_features: 200
+  max_features: 8000
+  max_mt_percent: 20
+  doublet_rate: 0.065
+
+integration:
+  method: "SCTransform"
+  features: 10000
+  dims: 30
+
+umap:
+  n_neighbors: 30
+  min_dist: 0.6
+  seed: 42
+
+deg:
+  method: "NEBULA"
+  fdr_threshold: 0.05
+  log2fc_threshold: 0.2
